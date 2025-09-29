@@ -26,28 +26,28 @@
             height: calc(100vh - 56px);
             width: 100%;
         }
-        .leaflet-control-layers-overlays label {
+        .leaflet-control-layers-overlays label span {
+            display: inline-block;
+            width: 100%;
+        }
+        .legend-in-control {
             display: block;
-        }
-        .layer-legend-container {
-            padding-left: 25px;
+            margin-top: 5px;
+            padding-left: 10px;
             font-size: 0.9em;
-            line-height: 1.5;
+            line-height: 1.6;
         }
-        .layer-legend-container i {
+        .legend-in-control i {
             width: 12px;
             height: 12px;
-            float: left;
+            display: inline-block;
+            vertical-align: middle;
             margin-right: 5px;
             opacity: 0.9;
         }
-        .layer-legend-container .line {
-            height: 3px;
+        .legend-in-control .line {
             background-color: #ff0000;
-            width: 12px;
-            float: left;
-            margin-right: 5px;
-            margin-top: 5px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -103,13 +103,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="aboutModalLabel">Tentang Peta Ini</h5>
+                    <h5 class="modal-title" id="aboutModalLabel">Tentang Pembuat</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Nama:</strong> Hardika Ahmad Tegar Prakoso</p>
-                    <p><strong>NIM:</strong> 24/540141/SV/24786</p>
-                    <p><strong>Kelas:</strong> PGWEB B</p>
+                    <p><strong>Nama:</strong> [Nama Anda]</p>
+                    <p><strong>NIM:</strong> [NIM Anda]</p>
+                    <p><strong>Kelas:</strong> [Kelas Anda]</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -229,23 +229,6 @@
             kecamatanLayer = L.geoJSON(data, { style: styleKecamatan, onEachFeature: onEachFeatureKecamatan, pane: 'batasKecamatanPane' });
             layerControl.addOverlay(kecamatanLayer, "Batas Kecamatan" + getPendudukLegendHTML());
             kecamatanLayer.addTo(map);
-
-            // Inisialisasi Search Control setelah layer kecamatan dimuat
-            var searchControl = new L.Control.Search({
-                layer: kecamatanLayer,
-                propertyName: 'WADMKC',
-                marker: false,
-                textPlaceholder: 'Cari Kecamatan...',
-                moveToLocation: function(latlng, title, map) {
-                    var zoom = map.getBoundsZoom(latlng.layer.getBounds());
-                    map.setView(latlng, zoom); 
-                    latlng.layer.setStyle({weight: 5, color: '#00FFFF'});
-                    setTimeout(function() {
-                        kecamatanLayer.resetStyle(latlng.layer);
-                    }, 2000);
-                }
-            });
-            map.addControl(searchControl);
         });
 
         fetch('data/jalan.geojson').then(response => response.json()).then(data => {
